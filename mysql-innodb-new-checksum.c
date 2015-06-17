@@ -30,8 +30,8 @@ this program; if not, write to the Free Software Foundation, Inc.,
 #define UNIV_INLINE static inline
 #define UNIV_INTERN static
 #define ut_ad(x) do { }while(0)
-typedef unsigned long long ulint;
-typedef char byte;
+typedef unsigned long ulint;
+typedef unsigned char byte;
 #define UT_HASH_RANDOM_MASK	1463735687
 #define UT_HASH_RANDOM_MASK2	1653893711
 #define FIL_PAGE_OFFSET              4
@@ -150,8 +150,8 @@ int main()
 
   free(page);
 
-  if (csum != 281668974600000ULL) {
-	  printf("FAILED, expected 281668974600000 got %llu \n", csum);
+  if (csum != 203737326600000ULL) {
+	  printf("FAILED, expected 203737326600000 got %llu \n", csum);
 	  return 1;
   }
 
