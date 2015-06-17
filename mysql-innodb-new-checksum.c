@@ -24,6 +24,7 @@ this program; if not, write to the Free Software Foundation, Inc.,
 
 *****************************************************************************/
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define UNIV_INLINE static inline
@@ -126,9 +127,12 @@ int main()
 {
   byte *page;
   int i;
-  volatile ulint csum; /* volatile to force GCC not to optimize out loop */
+  volatile ulint csum=0; /* volatile to force GCC not to optimize out loop */
 
   page = malloc(UNIV_PAGE_SIZE);
+
+  srand(42);
+
   for (i=0; i< UNIV_PAGE_SIZE; i++)
     page[i] = rand();
 
@@ -136,6 +140,11 @@ int main()
     csum+= buf_calc_page_new_checksum(page);
 
   free(page);
+
+  if (csum != 105765277000000ULL) {
+	  printf("FAILED, expected 105765277000000 got %llu \n", csum);
+	  return 1;
+  }
 
   return 0;
 }
