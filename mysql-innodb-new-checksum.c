@@ -40,6 +40,17 @@ typedef char byte;
 #define FIL_PAGE_DATA               38
 #define UNIV_PAGE_SIZE 16384
 
+
+/* myrand straight from the rand man page, because we want predictability! */
+static unsigned long next = 1;
+
+/* RAND_MAX assumed to be 32767 */
+int myrand(void) {
+	next = next * 1103515245 + 12345;
+	return((unsigned)(next/65536) % 32768);
+}
+
+
 UNIV_INLINE
 ulint
 ut_fold_ulint_pair(
@@ -131,18 +142,16 @@ int main()
 
   page = malloc(UNIV_PAGE_SIZE);
 
-  srand(42);
-
   for (i=0; i< UNIV_PAGE_SIZE; i++)
-    page[i] = rand();
+    page[i] = myrand();
 
   for (i=0; i<100000; i++)
     csum+= buf_calc_page_new_checksum(page);
 
   free(page);
 
-  if (csum != 105765277000000ULL) {
-	  printf("FAILED, expected 105765277000000 got %llu \n", csum);
+  if (csum != 281668974600000ULL) {
+	  printf("FAILED, expected 281668974600000 got %llu \n", csum);
 	  return 1;
   }
 
