@@ -1794,9 +1794,9 @@ int main(void)
 	uchar *s = malloc(4096);
 
 	for(i=0;i<4096;i++)
-		s[i] = rand();
+		s[i] = 'a' + rand() % 26;
 
-	for(i=0;i<1000000000;i++)
+	for(i=0;i<3000000;i++)
 		my_hash_sort_utf8(s, 1000, &n1, &n2);
 
 	return 0;
