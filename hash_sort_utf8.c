@@ -1793,11 +1793,20 @@ int main(void)
 	ulong n1, n2;
 	uchar *s = malloc(4096);
 
+	srand(0);
+
 	for(i=0;i<4096;i++)
 		s[i] = 'a' + rand() % 26;
 
 	for(i=0;i<3000000;i++)
 		my_hash_sort_utf8(s, 1000, &n1, &n2);
+
+	printf("0x%lx 0x%lx\n", n1, n2);
+
+	if (n1 == 0x238c3bb575972044 && n2 == 0x430e23400)
+		printf("SUCCESS\n");
+	else
+		printf("FAIL\n");
 
 	return 0;
 }
