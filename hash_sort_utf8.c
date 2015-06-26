@@ -1775,6 +1775,24 @@ static void my_hash_sort_utf8(const uchar *s, size_t slen,
   while (e > s && e[-1] == ' ')
     e--;
 
+  while (e - s > 8)
+  {
+	  uint64_t c = *(uint64_t*)s;
+	  uchar *p = &c;
+	  if (!((c & 0x7f7f7f7f7f7f7f7fULL) == c))
+		  break;
+	  for(res=0; res<8;res++)
+	  {
+		  wc = p[res];
+		  wc = uni_plane[0] ? uni_plane[0][wc & 0xFF].sort : wc;
+		  n1[0]^= (((n1[0] & 63)+n2[0])*(wc & 0xFF))+ (n1[0] << 8);
+		  n2[0]+=3;
+		  n1[0]^= (((n1[0] & 63)+n2[0])*(wc >> 8))+ (n1[0] << 8);
+		  n2[0]+=3;
+	  }
+	  s+=8;
+  }
+  
   while ((s < e) && (res=my_utf8_uni(&wc, (uchar *)s, (uchar*)e))>0 )
   {
     int plane = (wc>>8) & 0xFF;
