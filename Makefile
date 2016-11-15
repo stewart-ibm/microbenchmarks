@@ -10,7 +10,7 @@ hash_sort_utf8: hash_sort_utf8.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 murmur3_128_bench: murmur3_128_bench.c
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -std=gnu99 -o $@ $^
 
 
 mysql-innodb-new-checksum: mysql-innodb-new-checksum.c
